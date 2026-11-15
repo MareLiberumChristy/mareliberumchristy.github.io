@@ -1,0 +1,19 @@
+title: "Xiaoyan (Christy) Qiu"
+description: "Xiaoyan (Christy) Qiu — Political Science, International Relations, Formal Theory"
+email: "x.qiu@wustl.edu"
+# The photo currently uses the existing Squarespace CDN URL.
+# IMPORTANT: replace with a local copy before ending Squarespace service.
+# Example after downloading: profile_image: "/assets/images/portrait.jpg"
+profile_image: "https://images.squarespace-cdn.com/content/v1/5e56908ffedd07272f5e5b75/1594486884552-SH37A5ODIKHAW5M4QD1S/FinalWP.JPG"
+markdown: kramdown
+kramdown:
+  input: GFM
+permalink: pretty
+# Leave baseurl blank for a username.github.io repository or a custom domain.
+baseurl: ""
+exclude:
+  - README.md
+  - MIGRATION_CHECKLIST.md
+  - Gemfile
+  - Gemfile.lock
+  - scripts

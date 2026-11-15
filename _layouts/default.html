@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#111111">
+  <meta name="description" content="{{ site.description | escape }}">
+  <title>{% if page.title %}{{ page.title }} — {% endif %}{{ site.title }}</title>
+  <link rel="stylesheet" href="{{ '/assets/css/style.css' | relative_url }}">
+</head>
+<body class="{% if page.page_class %}{{ page.page_class }}{% else %}page-standard{% endif %}">
+  <a class="skip-link" href="#main">Skip to content</a>
+  <div class="site-shell">
+    <header class="site-header">
+      <a class="site-brand" href="{{ '/' | relative_url }}">{{ site.title }}</a>
+      <nav class="site-nav" aria-label="Main navigation">
+        <a href="{{ '/' | relative_url }}" {% if page.nav == 'home' %}aria-current="page"{% endif %}>Home</a>
+        <a href="{{ '/research/' | relative_url }}" {% if page.nav == 'research' %}aria-current="page"{% endif %}>Research</a>
+        <a href="{{ '/teaching/' | relative_url }}" {% if page.nav == 'teaching' %}aria-current="page"{% endif %}>Teaching</a>
+      </nav>
+    </header>
+    <main id="main" class="main-content">
+      {% if page.nav == "home" %}
+        {{ content }}
+      {% else %}
+        <div class="prose">{{ content }}</div>
+      {% endif %}
+    </main>
+
+    <footer class="site-footer">
+      <span class="footer-department">Department of Political Science</span>
+      <div class="footer-right">
+        <span class="footer-university">Washington University in St. Louis</span>
+        <div class="cat-widget" aria-label="Site mascots">
+          <div class="cat-frame">
+            <img src="{{ '/assets/images/cats-outline-sticker.png' | relative_url }}" alt="汤圆（三花）和糯糯（黑猫），尾巴围成心形">
+            <span class="cat-hotspot cat-hotspot-left" tabindex="0" aria-label="汤圆">
+              <span class="cat-tooltip" role="tooltip">汤圆</span>
+            </span>
+            <span class="cat-hotspot cat-hotspot-right" tabindex="0" aria-label="糯糯">
+              <span class="cat-tooltip" role="tooltip">糯糯</span>
+            </span>
+          </div>
+        </div>
+      </div>
+    </footer>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      document.querySelectorAll('.main-content a, .site-footer a').forEach(function (link) {
+        const href = (link.getAttribute('href') || '').trim();
+        if (!href || href.startsWith('#') || href.startsWith('mailto:') || href.startsWith('javascript:')) return;
+        try {
+          const resolved = new URL(href, window.location.href);
+          const pathname = resolved.pathname.replace(/\/+$/, '/') || '/';
+          const isNavPage = resolved.origin === window.location.origin && ['/', '/research/', '/teaching/'].includes(pathname);
+          if (isNavPage) return;
+          link.setAttribute('target', '_blank');
+          link.setAttribute('rel', 'noopener noreferrer');
+        } catch (e) {
+          link.setAttribute('target', '_blank');
+          link.setAttribute('rel', 'noopener noreferrer');
+        }
+      });
+    });
+  </script>
+</body>
+</html>
