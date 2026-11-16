@@ -183,13 +183,15 @@ a:focus-visible { outline: 2px solid var(--focus); outline-offset: 5px; border-r
 }
 .cat-tooltip-left { left: 0; }
 .cat-tooltip-right { right: 0; }
-.cat-hotspot-left:hover ~ .cat-tooltip-left,
-.cat-hotspot-left:focus-visible ~ .cat-tooltip-left,
-.cat-hotspot-right:hover ~ .cat-tooltip-right,
-.cat-hotspot-right:focus-visible ~ .cat-tooltip-right {
-  opacity: 1;
-  visibility: visible;
-  transform: translateY(0);
+@media (hover: hover) and (pointer: fine) {
+  .cat-hotspot-left:hover ~ .cat-tooltip-left,
+  .cat-hotspot-left:focus-visible ~ .cat-tooltip-left,
+  .cat-hotspot-right:hover ~ .cat-tooltip-right,
+  .cat-hotspot-right:focus-visible ~ .cat-tooltip-right {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+  }
 }
 /* Separate, subtle caption underneath the image, no popup background. */
 .cat-caption {
@@ -211,11 +213,13 @@ a:focus-visible { outline: 2px solid var(--focus); outline-offset: 5px; border-r
   transition: opacity 140ms ease, transform 140ms ease, visibility 140ms ease;
 }
 .cat-caption-friends { display: block; }
-.cat-widget:has(.cat-hotspot:hover) .cat-caption,
-.cat-widget:focus-within .cat-caption {
-  opacity: 1;
-  visibility: visible;
-  transform: translateY(0);
+@media (hover: hover) and (pointer: fine) {
+  .cat-widget:has(.cat-hotspot:hover) .cat-caption,
+  .cat-widget:focus-within .cat-caption {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+  }
 }
 /* Leave breathing room for the caption without moving the cat itself. */
 .site-footer { padding-bottom: 43px; }
@@ -228,28 +232,19 @@ a:focus-visible { outline: 2px solid var(--focus); outline-offset: 5px; border-r
   .cat-tooltip, .cat-caption { transition: none; }
 }
 
-/* Touch devices: reveal the name and link hint on first tap, navigate on second. */
+/* Touch devices: state, not sticky :hover/:focus, determines exactly one name. */
 @media (hover: none), (pointer: coarse) {
-  .cat-widget[data-selected-cat="left"] .cat-tooltip-left,
-  .cat-widget[data-selected-cat="right"] .cat-tooltip-right {
-    opacity: 1;
-    visibility: visible;
-    transform: translateY(0);
+  .cat-widget .cat-tooltip,
+  .cat-widget .cat-caption {
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(4px);
   }
+  .cat-widget[data-selected-cat="left"] .cat-tooltip-left,
+  .cat-widget[data-selected-cat="right"] .cat-tooltip-right,
   .cat-widget[data-selected-cat] .cat-caption {
     opacity: 1;
     visibility: visible;
     transform: translateY(0);
-  }
-  /* Avoid sticky simulated hover displaying another name on touch. */
-  .cat-hotspot-left:hover ~ .cat-tooltip-left:not(:focus-visible),
-  .cat-hotspot-right:hover ~ .cat-tooltip-right:not(:focus-visible) {
-    opacity: 0;
-    visibility: hidden;
-  }
-  .cat-widget[data-selected-cat="left"] .cat-tooltip-left,
-  .cat-widget[data-selected-cat="right"] .cat-tooltip-right {
-    opacity: 1;
-    visibility: visible;
   }
 }
