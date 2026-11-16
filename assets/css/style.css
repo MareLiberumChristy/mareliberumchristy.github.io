@@ -130,12 +130,11 @@ a:focus-visible { outline: 2px solid var(--focus); outline-offset: 5px; border-r
 @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } .site-nav a { transition: none; } }
 
 
-/* Option A: tiny transparent cat cutout, inside the footer below its divider. */
+/* Option A: transparent outlined cats; independent name tooltip + click hint below */
 .cat-widget {
   position: relative;
   z-index: 2;
   flex: 0 0 auto;
-  pointer-events: none;
 }
 .cat-frame {
   position: relative;
@@ -144,50 +143,87 @@ a:focus-visible { outline: 2px solid var(--focus); outline-offset: 5px; border-r
   border: 0;
   background: transparent;
   box-shadow: none;
-  pointer-events: auto;
 }
-.cat-frame img {
-  display: block;
-  width: 100%;
-  height: auto;
-}
+.cat-frame img { display: block; width: 100%; height: auto; }
 .cat-hotspot {
+  display: block;
   position: absolute;
   top: 5%;
   height: 91%;
   width: 46%;
   border-radius: 35%;
-  outline: none;
-  cursor: help;
+  z-index: 1;
+  cursor: pointer;
+  text-decoration: none;
 }
 .cat-hotspot-left { left: 1%; }
 .cat-hotspot-right { right: 1%; }
 .cat-hotspot:focus-visible { outline: 2px solid #e6d5ae; outline-offset: 1px; }
+/* Small individual name pill above the corresponding cat. */
 .cat-tooltip {
   position: absolute;
+  z-index: 3;
   bottom: calc(100% + 7px);
-  left: 50%;
-  transform: translate(-50%, 4px);
-  padding: 4px 8px;
-  border-radius: 7px;
-  white-space: nowrap;
-  font-size: 11px;
-  line-height: 1.3;
+  width: max-content;
+  padding: 4px 9px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 700;
+  text-align: center;
+  line-height: 1.4;
+  letter-spacing: 0;
   color: #141414;
-  background: rgba(255,255,255,.94);
+  background: rgba(255,255,255,.95);
+  box-shadow: 0 5px 18px rgba(0,0,0,.18);
   opacity: 0;
+  visibility: hidden;
   pointer-events: none;
-  transition: opacity 140ms ease, transform 140ms ease;
+  transform: translateY(4px);
+  transition: opacity 140ms ease, transform 140ms ease, visibility 140ms ease;
 }
-.cat-hotspot:hover .cat-tooltip,
-.cat-hotspot:focus-visible .cat-tooltip {
+.cat-tooltip-left { left: 0; }
+.cat-tooltip-right { right: 0; }
+.cat-hotspot-left:hover ~ .cat-tooltip-left,
+.cat-hotspot-left:focus-visible ~ .cat-tooltip-left,
+.cat-hotspot-right:hover ~ .cat-tooltip-right,
+.cat-hotspot-right:focus-visible ~ .cat-tooltip-right {
   opacity: 1;
-  transform: translate(-50%, 0);
+  visibility: visible;
+  transform: translateY(0);
 }
+/* Separate, subtle caption underneath the image, no popup background. */
+.cat-caption {
+  position: absolute;
+  top: calc(100% + 6px);
+  right: 0;
+  width: 162px;
+  max-width: calc(100vw - 42px);
+  font-size: 10px;
+  font-weight: 400;
+  line-height: 1.4;
+  letter-spacing: .015em;
+  text-align: right;
+  color: #adadad;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transform: translateY(-3px);
+  transition: opacity 140ms ease, transform 140ms ease, visibility 140ms ease;
+}
+.cat-caption-friends { display: block; }
+.cat-widget:has(.cat-hotspot:hover) .cat-caption,
+.cat-widget:focus-within .cat-caption {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+/* Leave breathing room for the caption without moving the cat itself. */
+.site-footer { padding-bottom: 43px; }
 @media (max-width: 740px) {
   .cat-frame { width: 68px; }
   .footer-university { white-space: normal; text-align: right; }
+  .cat-caption { width: 150px; font-size: 9.5px; }
 }
 @media (prefers-reduced-motion: reduce) {
-  .cat-tooltip { transition: none; }
+  .cat-tooltip, .cat-caption { transition: none; }
 }
