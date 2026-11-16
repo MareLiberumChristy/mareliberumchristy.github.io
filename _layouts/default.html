@@ -47,6 +47,31 @@
 
   <script>
     document.addEventListener('DOMContentLoaded', function () {
+      // Touch devices have no hover: first tap reveals the name and caption;
+      // a second tap on the same cat follows its link normally.
+      const catWidget = document.querySelector('.cat-widget');
+      const touchOnly = window.matchMedia('(hover: none), (pointer: coarse)');
+      if (catWidget) {
+        const cats = [...catWidget.querySelectorAll('.cat-hotspot')];
+        cats.forEach((cat) => {
+          cat.addEventListener('click', (event) => {
+            if (!touchOnly.matches) return;
+            const name = cat.classList.contains('cat-hotspot-left') ? 'left' : 'right';
+            if (catWidget.dataset.selectedCat !== name) {
+              event.preventDefault();
+              catWidget.dataset.selectedCat = name;
+            }
+          });
+        });
+        document.addEventListener('pointerdown', (event) => {
+          if (!catWidget.contains(event.target)) {
+            delete catWidget.dataset.selectedCat;
+          }
+        });
+        document.addEventListener('keydown', (event) => {
+          if (event.key === 'Escape') delete catWidget.dataset.selectedCat;
+        });
+      }
       document.querySelectorAll('.main-content a, .site-footer a').forEach(function (link) {
         const href = (link.getAttribute('href') || '').trim();
         if (!href || href.startsWith('#') || href.startsWith('mailto:') || href.startsWith('javascript:')) return;
