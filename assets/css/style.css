@@ -227,3 +227,29 @@ a:focus-visible { outline: 2px solid var(--focus); outline-offset: 5px; border-r
 @media (prefers-reduced-motion: reduce) {
   .cat-tooltip, .cat-caption { transition: none; }
 }
+
+/* Touch devices: reveal the name and link hint on first tap, navigate on second. */
+@media (hover: none), (pointer: coarse) {
+  .cat-widget[data-selected-cat="left"] .cat-tooltip-left,
+  .cat-widget[data-selected-cat="right"] .cat-tooltip-right {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+  }
+  .cat-widget[data-selected-cat] .cat-caption {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+  }
+  /* Avoid sticky simulated hover displaying another name on touch. */
+  .cat-hotspot-left:hover ~ .cat-tooltip-left:not(:focus-visible),
+  .cat-hotspot-right:hover ~ .cat-tooltip-right:not(:focus-visible) {
+    opacity: 0;
+    visibility: hidden;
+  }
+  .cat-widget[data-selected-cat="left"] .cat-tooltip-left,
+  .cat-widget[data-selected-cat="right"] .cat-tooltip-right {
+    opacity: 1;
+    visibility: visible;
+  }
+}
