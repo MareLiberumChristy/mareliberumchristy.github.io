@@ -47,8 +47,8 @@
 
   <script>
     document.addEventListener('DOMContentLoaded', function () {
-      // Touch devices have no hover: first tap reveals the name and caption;
-      // a second tap on the same cat follows its link normally.
+      // Touch: first tap selects one cat; only the next tap on that SAME cat opens the link.
+      // Selecting the other cat replaces the name and caption, without navigating.
       const catWidget = document.querySelector('.cat-widget');
       const touchOnly = window.matchMedia('(hover: none), (pointer: coarse)');
       if (catWidget) {
@@ -57,10 +57,15 @@
           cat.addEventListener('click', (event) => {
             if (!touchOnly.matches) return;
             const name = cat.classList.contains('cat-hotspot-left') ? 'left' : 'right';
-            if (catWidget.dataset.selectedCat !== name) {
-              event.preventDefault();
-              catWidget.dataset.selectedCat = name;
+            if (catWidget.dataset.selectedCat === name) {
+              // Second consecutive tap on the same cat: allow the new-tab link.
+              delete catWidget.dataset.selectedCat;
+              return;
             }
+            // First tap, or switching from the other cat: show this cat only.
+            event.preventDefault();
+            catWidget.dataset.selectedCat = name;
+            cat.blur(); // prevent touch-synthesized focus from showing stale tooltips
           });
         });
         document.addEventListener('pointerdown', (event) => {
